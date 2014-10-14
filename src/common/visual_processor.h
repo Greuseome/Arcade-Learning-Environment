@@ -26,6 +26,11 @@ class OSystem;
 class MediaSource;
 class RomSettings;
 
+const int substrate_width  = 8;
+const int substrate_height = 10;
+const int max_num_classes  = 9;
+
+
 // Search a map for a key and returns default value if not found
 template <typename K, typename V>
     V GetWithDef(const std::map <K,V> & m, const K & key, const V & defval ) {
@@ -273,7 +278,7 @@ public:
     bool found_self();
 
     // Methods for the SDLEventHandler class
-    bool handleSDLEvent(const SDL_Event& event);
+    //bool handleSDLEvent(const SDL_Event& event);
     void display_screen(IntMatrix& screen_matrix, int screen_width, int screen_height);
     void usage();
 
@@ -324,6 +329,13 @@ public:
     int display_mode;       // Which graphical representation should we display?
     bool display_self;      // Should the results of self detection be displayed?
     int proto_indx;         // Indicates which prototype we are saving masks for
+
+	//Object mapping functions
+	
+    void setSubstrateValues(int object_output[][substrate_width][substrate_height]);
+    void setSubstrateObjectValues(int object_output[][substrate_width][substrate_height]);
+    void paintSubstrate(int object_output[][substrate_width][substrate_height]);
+    void setSubstrateSelfValue(int object_output[][substrate_width][substrate_height]);
 };
 
 #endif

@@ -1258,6 +1258,7 @@ void VisualProcessor::loadPrototype(boost::filesystem::path p, const string& pre
     }
 };
 
+/*
 bool VisualProcessor::handleSDLEvent(const SDL_Event& event) {
     bool refreshDisplay = false;
 
@@ -1452,6 +1453,7 @@ bool VisualProcessor::handleSDLEvent(const SDL_Event& event) {
 
     return false;
 };
+*/
 
 void VisualProcessor::usage() {
     printf("  -1: Toggle Blob View\n  -2: Toggle Object View\n  -3: Toggle Prototype View\n  -4: Toggle display of self object\n  -q: Mouse select Blobs\n  -w: Mouse select objects\n  -e: Mouse Select Prototypes\n  -i: Get info about current selection\n  -m: Cycle through current prototypes\n  -n: Create a new prototype\n  -s: Save currently selected object to selected prototype\n");
@@ -1613,3 +1615,42 @@ void VisualProcessor::plot_self(IntMatrix& screen_matrix) {
     //     }
     // }
 };
+
+
+    void VisualProcessor::setSubstrateValues(int object_output[][substrate_width][substrate_height]) {
+        // Set substrate value for all objects (of a certain size)
+        setSubstrateObjectValues(object_output);
+
+        // Set substrate value for self
+        setSubstrateSelfValue(object_output);
+    };
+
+    void VisualProcessor::setSubstrateObjectValues(int object_output[][substrate_width][substrate_height]) {
+        for (int i=0; i<manual_obj_classes.size(); i++) {
+            Prototype& proto = manual_obj_classes[i];
+            paintSubstrate(proto, object_output, i);
+        }
+    };
+
+    void VisualProcessor::paintSubstrate(
+                                         Prototype& proto,
+                                         int object_output[][substrate_width][substrate_height],
+                                         int substrateIndx) {
+        // Assign values to each of the objects
+        float assigned_value = 1.0;
+        for (set<long>::iterator it=proto.obj_ids.begin(); it!=proto.obj_ids.end(); it++) {
+            long obj_id = *it;
+            assert(composite_objs.find(obj_id) != composite_objs.end());
+            point obj_centroid = composite_objs[obj_id].get_centroid();
+            int adj_x = obj_centroid.x * substrate_width / screen_width;
+            int adj_y = obj_centroid.y * substrate_height / screen_height;
+            object_output [substrateIndx][adj_x][adj_y] = assigned_value;
+        }
+    };
+
+    void VisualProcessor::setSubstrateSelfValue(int object_output[][substrate_width][substrate_height]) {
+        if (!found_self())
+            return;
+        paintSubstrate(manual_self, object_output, manual_obj_classes.size());
+    };
+

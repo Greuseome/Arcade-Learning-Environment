@@ -161,6 +161,33 @@ void FIFOController::update() {
             final_str_n += sprintf(final_str + final_str_n, ":");
         }
         if (b_send_screen_matrix) {
+		
+		const int substrate_width  = 8;
+		const int substrate_height = 10;
+		const int max_num_classes  = 9;
+
+        int object_output [max_num_classes][substrate_width][substrate_height];
+
+            // Set value of all nodes to zero
+            for (int i = 0; i < max_num_classes+1; i++) {
+                for (int j = 0; j < substrate_width; j++) {
+                    for (int k = 0; k < substrate_height; k++) {
+                        object_output[i][j][k] = 0;
+                    }
+                }
+            }
+
+           p_osystem->p_vis_proc->setSubstrateValues(object_output);
+
+            for (int i = 0; i < max_num_classes+1; i++) {
+                for (int j = 0; j < substrate_width; j++) {
+                    for (int k = 0; k < substrate_height; k++) {
+                        cout << object_output[i][j][k];
+                    }
+                    cout << "\n";
+                }
+                cout << "\n";
+            }
 
             // MGB @phosphor
             if (!b_disable_color_averaging)
