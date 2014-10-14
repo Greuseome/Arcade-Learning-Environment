@@ -21,6 +21,7 @@
 #include "fifo_controller.h"
 #include "Serializer.hxx"
 #include "Deserializer.hxx"
+#include "../common/visual_processor.h" //MHAUSKN
 
 #include "Roms.hpp"
 #include "RomSettings.hpp"
@@ -79,8 +80,11 @@ FIFOController::FIFOController(OSystem* _osystem, bool named_pipes) :
     i_skip_frames_counter = i_skip_frames_num;
     token = strtok(NULL, ",\n");
     b_send_rewards = atoi(token);
+    token = strtok(NULL, ",\n");
+    b_send_objects = atoi(token);
 
     cerr << "A.L.E: send_screen_matrix is: " << b_send_screen_matrix << endl;
+    cerr << "A.L.E: send_objects is: " << b_send_objects << endl;
     cerr << "A.L.E: send_console_ram is: " << b_send_console_ram << endl;
     cerr << "A.L.E: i_skip_frames_num is: " << i_skip_frames_num    << endl;
     cerr << "A.L.E: reinforcement learning mode: " << b_send_rewards << endl;
@@ -160,16 +164,16 @@ void FIFOController::update() {
             }
             final_str_n += sprintf(final_str + final_str_n, ":");
         }
-        if (b_send_screen_matrix) {
-		
-		const int substrate_width  = 8;
-		const int substrate_height = 10;
-		const int max_num_classes  = 9;
+        if (b_send_objects) {
 
-        int object_output [max_num_classes][substrate_width][substrate_height];
+            const int substrate_width  = 8;
+            const int substrate_height = 10;
+            const int max_num_classes  = 9;
+
+            int object_output [max_num_classes][substrate_width][substrate_height];
 
             // Set value of all nodes to zero
-            for (int i = 0; i < max_num_classes+1; i++) {
+            for (int i = 0; i < max_num_classes; i++) {
                 for (int j = 0; j < substrate_width; j++) {
                     for (int k = 0; k < substrate_height; k++) {
                         object_output[i][j][k] = 0;
@@ -177,17 +181,22 @@ void FIFOController::update() {
                 }
             }
 
-           p_osystem->p_vis_proc->setSubstrateValues(object_output);
+            // get object values
+            p_osystem->p_vis_proc->setSubstrateValues(object_output);
 
-            for (int i = 0; i < max_num_classes+1; i++) {
+            // printing object values
+            for (int i = 0; i < p_osystem->p_vis_proc->manual_obj_classes.size()+1; i++) {
                 for (int j = 0; j < substrate_width; j++) {
                     for (int k = 0; k < substrate_height; k++) {
-                        cout << object_output[i][j][k];
+                        final_str_n += sprintf(final_str + final_str_n, "%02x", object_output[i][j][k]);
                     }
-                    cout << "\n";
                 }
-                cout << "\n";
+                final_str_n += sprintf(final_str + final_str_n, "\n");
             }
+            final_str_n += sprintf(final_str + final_str_n, ":");
+
+        }
+        if (b_send_screen_matrix) {
 
             // MGB @phosphor
             if (!b_disable_color_averaging)

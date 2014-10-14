@@ -303,9 +303,7 @@ public:
     void setSubstrateObjectValues(int object_output[][substrate_width][substrate_height]);
     void paintSubstrate(Prototype& proto, int object_output[][substrate_width][substrate_height], int substrateIndx);
     void setSubstrateSelfValue(int object_output[][substrate_width][substrate_height]);
-};
 
-   
 public:
     OSystem* p_osystem;
     RomSettings* game_settings;

@@ -83,6 +83,7 @@ class GameController {
         bool b_send_rewards;        // When True, will send the rewards
         bool b_send_screen_matrix;  // When True, we will send the screen matrix
         bool b_send_console_ram;    // When True, we will send the console ram
+        bool b_send_objects;        // When True, we will send object matrices
         int i_skip_frames_num;      // We skip this number of frames after
                                     // sending a frame
         int i_skip_frames_counter;  // Counts how many frames we have skipped
