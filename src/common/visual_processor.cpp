@@ -1239,7 +1239,7 @@ bool VisualProcessor::saveSelection() {
 void VisualProcessor::loadPrototype(boost::filesystem::path p, const string& prefix,
                                     const string& suffix, Prototype& proto) {
     if (exists(p) && is_directory(p)) {
-        printf("Loading prototype: %s ... ",p.string().c_str());
+        //printf("Loading prototype: %s ... ",p.string().c_str());
         for (int maskNum=1; ; maskNum++) {
             p /= prefix + boost::lexical_cast<std::string>(maskNum) + suffix;
             if (exists(p) && is_regular_file(p)) {
@@ -1248,7 +1248,7 @@ void VisualProcessor::loadPrototype(boost::filesystem::path p, const string& pre
                 p = p.parent_path();
             } else {
                 p = p.parent_path();
-                printf("loaded %d mask(s).\n",maskNum-1);
+                //printf("loaded %d mask(s).\n",maskNum-1);
                 break;
             }
         }

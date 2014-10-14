@@ -428,7 +428,7 @@ bool OSystem::createConsole(const string& romfile)
   }
 
   if (mySettings->getBool("process_screen",true)) {
-      printf("Starting Visual Processing\n");
+      //printf("Starting Visual Processing\n");
       p_vis_proc = new VisualProcessor(this, myRomFile);
   }
 

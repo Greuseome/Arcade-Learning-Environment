@@ -191,7 +191,7 @@ void FIFOController::update() {
                         final_str_n += sprintf(final_str + final_str_n, "%02x", object_output[i][j][k]);
                     }
                 }
-                final_str_n += sprintf(final_str + final_str_n, "\n");
+                //final_str_n += sprintf(final_str + final_str_n, "\n");
             }
             final_str_n += sprintf(final_str + final_str_n, ":");
 
