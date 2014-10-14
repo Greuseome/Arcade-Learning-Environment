@@ -297,7 +297,15 @@ public:
     // Loads masks of images. Assumes files have format prefix + image_num + suffix.
     void loadPrototype(boost::filesystem::path p, const string& prefix, const string& suffix,
                        Prototype& proto);
-    
+
+	// Object Mapping Functions
+    void setSubstrateValues(int object_output[][substrate_width][substrate_height]);
+    void setSubstrateObjectValues(int object_output[][substrate_width][substrate_height]);
+    void paintSubstrate(Prototype& proto, int object_output[][substrate_width][substrate_height], int substrateIndx);
+    void setSubstrateSelfValue(int object_output[][substrate_width][substrate_height]);
+};
+
+   
 public:
     OSystem* p_osystem;
     RomSettings* game_settings;
@@ -330,12 +338,7 @@ public:
     bool display_self;      // Should the results of self detection be displayed?
     int proto_indx;         // Indicates which prototype we are saving masks for
 
-	//Object mapping functions
 	
-    void setSubstrateValues(int object_output[][substrate_width][substrate_height]);
-    void setSubstrateObjectValues(int object_output[][substrate_width][substrate_height]);
-    void paintSubstrate(int object_output[][substrate_width][substrate_height]);
-    void setSubstrateSelfValue(int object_output[][substrate_width][substrate_height]);
 };
 
 #endif
