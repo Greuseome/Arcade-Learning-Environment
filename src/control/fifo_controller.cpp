@@ -188,7 +188,7 @@ void FIFOController::update() {
             for (int i = 0; i < p_osystem->p_vis_proc->manual_obj_classes.size()+1; i++) {
                 for (int j = 0; j < substrate_width; j++) {
                     for (int k = 0; k < substrate_height; k++) {
-                        final_str_n += sprintf(final_str + final_str_n, "%02x", object_output[i][j][k]);
+                        final_str_n += sprintf(final_str + final_str_n, "%u", object_output[i][j][k]);
                     }
                 }
                 //final_str_n += sprintf(final_str + final_str_n, "\n");
